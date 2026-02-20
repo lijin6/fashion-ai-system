@@ -13,6 +13,6 @@ venv/
 *.sqlite3
 
 # 前端依赖
-fronted/node_modules/
+fronted/node_modules
 
 
