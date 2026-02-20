@@ -12,9 +12,6 @@
 ---
 
 ## 🏗️ 技术架构
-
-![技术架构图](./map/architecture.png)
-
 ### 后端 (Backend)
 * **Framework**: FastAPI (高并发异步框架)
 * **AI Engine**: TensorFlow 2.15 + Keras
@@ -93,12 +90,11 @@ npm run dev
 * [ ] 导出报告：支持下载 PDF 格式的分析报告
 * [ ] 移动端 App 适配
 
----
+
 
 ## 📄 开源协议
 
 本项目遵循 [MIT License](https://www.google.com/search?q=https://opensource.org/licenses/MIT)。
 
-```
 
----
+
