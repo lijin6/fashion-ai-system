@@ -1,36 +1,27 @@
-import type { PredictionResponse } from "../types/prediction";
+import React from 'react';
+import type { PredictionResult } from '../types/prediction';
+import { ATTR_NAME_MAP } from '../constants/classMapping';
 
-interface Props {
-  data: PredictionResponse;
-}
-
-export default function ResultCard({ data }: Props) {
+export const ResultCard: React.FC<{ data: PredictionResult }> = ({ data }) => {
+  const percentage = Math.round(data.score * 100);
+  
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-lg mt-6">
-      <h2 className="text-2xl font-bold text-center mb-4 text-blue-700">
-        识别结果
-      </h2>
-
-      <div className="space-y-4">
-        {Object.entries(data.results).map(([key, value]) => (
-          <div key={key}>
-            <div className="flex justify-between mb-1">
-              <span className="font-medium capitalize">{key.replace('_', ' ')}</span>
-              <span className="text-gray-600">{(value.confidence * 100).toFixed(2)}%</span>
-            </div>
-            {/* 置信度进度条 */}
-            <div className="w-full bg-gray-200 rounded-full h-4">
-              <div
-                className={`h-4 rounded-full transition-all duration-500
-                  ${value.confidence > 0.75 ? 'bg-green-500' :
-                    value.confidence > 0.5 ? 'bg-yellow-400' :
-                    'bg-red-500'}`}
-                style={{ width: `${value.confidence * 100}%` }}
-              />
-            </div>
-          </div>
-        ))}
+    <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+      <div className="flex justify-between items-center mb-2">
+        <span className="text-sm font-medium text-slate-500">
+          {ATTR_NAME_MAP[data.attr] || data.attr}
+        </span>
+        <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">
+          {percentage}%
+        </span>
+      </div>
+      <div className="text-lg font-semibold text-slate-800 mb-3">{data.label}</div>
+      <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+        <div 
+          className="bg-blue-500 h-full transition-all duration-500 ease-out"
+          style={{ width: `${percentage}%` }}
+        />
       </div>
     </div>
   );
-}
+};

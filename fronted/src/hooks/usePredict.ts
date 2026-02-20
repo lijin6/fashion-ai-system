@@ -1,42 +1,32 @@
-import { useState } from "react";
-import type { PredictionResponse } from "../types/prediction";
+import { useState } from 'react';
+import type { PredictionResult, PredictResponse } from '../types/prediction';
 
-export function usePredict() {
-  const [result, setResult] = useState<PredictionResponse | null>(null);
+export const usePredict = () => {
+  const [results, setResults] = useState<PredictionResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [progress, setProgress] = useState(0); // 新增进度状态
 
   const predict = async (file: File) => {
     setLoading(true);
     setError(null);
-    setProgress(0);
-    setResult(null);
-
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
 
     try {
-      // 模拟上传 / 推理进度
-      for (let i = 1; i <= 100; i++) {
-        await new Promise(r => setTimeout(r, 15)); // 15ms 模拟进度
-        setProgress(i);
-      }
-
-      // 模拟返回数据
-      const data: PredictionResponse = {
-        results: {
-          coat_length: { class_index: 2, confidence: 0.85 },
-          sleeve_length: { class_index: 5, confidence: 0.92 },
-        },
-      };
-      setResult(data);
-    } catch (err: any) {
-      setError(err.message);
+      const response = await fetch('http://localhost:8000/api/predict', {
+        method: 'POST',
+        body: formData,
+      });
+      if (!response.ok) throw new Error('服务器响应错误');
+      const data: PredictResponse = await response.json();
+      setResults(data.results);
+    } catch (err) {
+      setError('模型推理失败，请检查后端连接');
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  return { result, loading, error, predict, progress };
-}
+  return { predict, results, loading, error, setResults };
+};
