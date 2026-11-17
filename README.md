@@ -31,7 +31,7 @@
 
 ### 1. 克隆仓库
 ```bash
-git clone [https://github.com/your-username/fashion-ai-system.git](https://github.com/your-username/fashion-ai-system.git)
+git clone [https://github.com/your-username/fashion-ai-system.git](https://github.com/lijin6/fashion-ai-system.git)
 cd fashion-ai-system
 
 ```
